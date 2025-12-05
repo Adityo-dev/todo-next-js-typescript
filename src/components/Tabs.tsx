@@ -1,20 +1,21 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
 
 function TabsCompo() {
   return (
     <>
       <Tabs defaultValue="all">
         <TabsList>
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="active">Active</TabsTrigger>
-          <TabsTrigger value="completed">Completed</TabsTrigger>
+          <Link href="/">
+            <TabsTrigger value="all">All</TabsTrigger>
+          </Link>
+          <Link href="/?todos=active">
+            <TabsTrigger value="active">Active</TabsTrigger>
+          </Link>
+          <Link href="/?todos=completed">
+            <TabsTrigger value="completed">Completed</TabsTrigger>
+          </Link>
         </TabsList>
-
-        <TabsContent value="all">{/* All Todos */}</TabsContent>
-
-        <TabsContent value="active">{/* Active Todos */}</TabsContent>
-
-        <TabsContent value="completed">{/* Completed Todos */}</TabsContent>
       </Tabs>
     </>
   );

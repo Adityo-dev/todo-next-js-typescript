@@ -1,12 +1,19 @@
 "use client";
 
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState, useEffect } from "react";
 
 type Todo = {
   id: string;
   task: string;
   completed: boolean;
   date: Date;
+};
+
+type StoredTodo = {
+  id: string;
+  task: string;
+  completed: boolean;
+  date: string;
 };
 
 type TodosContextType = {
@@ -23,26 +30,41 @@ type TodosProviderProps = {
 };
 
 export function TodosProvider({ children }: TodosProviderProps) {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("todos");
+      if (saved) {
+        const parsed: StoredTodo[] = JSON.parse(saved);
 
-  // Function to add a new todo
+        return parsed.map((t) => ({
+          ...t,
+          date: new Date(t.date),
+        }));
+      }
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   const handleAddTodo = (task: string) => {
-    const newTodo: Todo = {
-      id: crypto.randomUUID(),
-      task: task,
-      completed: false,
-      date: new Date(),
-    };
-
-    setTodos((prev) => [...prev, newTodo]);
+    setTodos((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        task,
+        completed: false,
+        date: new Date(),
+      },
+    ]);
   };
 
-  // delete a todo by id
   const handleDeleteTodo = (id: string) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
-  // Toggle todo completion status
   const handleToggleTodo = (id: string) => {
     setTodos((prev) =>
       prev.map((todo) =>

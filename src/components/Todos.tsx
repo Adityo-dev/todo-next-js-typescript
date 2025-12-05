@@ -1,11 +1,13 @@
 "use client";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { TodosContext } from "@/store/todos";
+import { TodosContext } from "@/context/todosContext";
+import { useSearchParams } from "next/navigation";
 import { useContext } from "react";
+import { Checkbox } from "./ui/checkbox";
+import { Button } from "./ui/button";
 
 function Todos() {
   const todoCtx = useContext(TodosContext);
+  console.log(todoCtx);
 
   const handleDelete = (id: string) => {
     if (!todoCtx) return;
@@ -13,22 +15,43 @@ function Todos() {
     todoCtx.handleDeleteTodo(id);
   };
 
-  const handleToggleTodo = (id: string) => {
+  const handleToggle = (id: string) => {
     if (!todoCtx) return;
     todoCtx.handleToggleTodo(id);
   };
 
+  // Get filter from URL search params
+  const searchParams = useSearchParams();
+  const filter = searchParams.get("todos") || "all";
+
+  // filtering logic
+  let filteredTodos = todoCtx?.todos || [];
+
+  if (filter === "active") {
+    filteredTodos = filteredTodos.filter((todo) => !todo.completed);
+  }
+
+  if (filter === "completed") {
+    filteredTodos = filteredTodos.filter((todo) => todo.completed);
+  }
+
   return (
     <div className="w-xl flex flex-col gap-6">
-      {todoCtx?.todos.map((todo) => (
+      {filteredTodos.map((todo) => (
         <div key={todo?.id} className="flex justify-between items-center gap-4">
-          <div className="flex-1 hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-orange-500 has-[[aria-checked=true]]:bg-orange-50 dark:has-[[aria-checked=true]]:border-orange-900 dark:has-[[aria-checked=true]]:bg-orange-950">
+          <div className="flex-1 hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 ">
             <Checkbox
-              id="toggle-2"
-              onCheckedChange={() => handleToggleTodo(todo?.id)}
-              className="data-[state=checked]:border-orange-500 data-[state=checked]:bg-orange-500 data-[state=checked]:text-white dark:data-[state=checked]:border-orange-700 dark:data-[state=checked]:bg-orange-700"
+              checked={todo?.completed}
+              onCheckedChange={() => handleToggle(todo?.id)}
             />
-            <p className="text-muted-foreground text-sm">{todo?.task}</p>
+
+            <p
+              className={`text-muted-foreground text-sm ${
+                todo?.completed && "line-through"
+              }`}
+            >
+              {todo?.task}
+            </p>
           </div>
           {todo?.completed ? (
             <Button onClick={() => handleDelete(todo?.id)} variant="ghost">

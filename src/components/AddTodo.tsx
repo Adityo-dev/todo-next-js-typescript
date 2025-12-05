@@ -2,7 +2,7 @@
 import { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { TodosContext } from "@/store/todos";
+import { TodosContext } from "@/context/todosContext";
 
 export default function AddTodo() {
   const [todoText, setTodoText] = useState<string>("");
@@ -12,7 +12,10 @@ export default function AddTodo() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    todoCtx.handleAddTodo(todoText);
+
+    if (!todoText.trim()) return;
+
+    todoCtx.handleAddTodo(todoText.trim());
     setTodoText("");
   };
 
@@ -27,7 +30,7 @@ export default function AddTodo() {
           className="flex-1"
         />
 
-        <Button type="submit" variant="default">
+        <Button type="submit" variant="default" disabled={!todoText.trim()}>
           Subscribe
         </Button>
       </div>
