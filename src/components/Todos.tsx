@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 
 function Todos() {
   const todoCtx = useContext(TodosContext);
-  console.log(todoCtx);
 
   const handleDelete = (id: string) => {
     if (!todoCtx) return;
@@ -43,7 +42,7 @@ function Todos() {
           key={todo.id}
           className="flex justify-between items-center gap-3 sm:gap-4"
         >
-          <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-orange-600 has-[[aria-checked=true]]:bg-orange-50 dark:has-[[aria-checked=true]]:border-orange-500 dark:has-[[aria-checked=true]]:bg-orange-600">
+          <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-orange-600 has-[[aria-checked=true]]:bg-orange-50 dark:has-[[aria-checked=true]]:border-orange-500 dark:has-[[aria-checked=true]]:bg-orange-600 cursor-pointer">
             <Checkbox
               id={todo.id}
               checked={todo.completed}
