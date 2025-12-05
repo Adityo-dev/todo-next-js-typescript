@@ -3,21 +3,19 @@ import Link from "next/link";
 
 function TabsCompo() {
   return (
-    <>
-      <Tabs defaultValue="all">
-        <TabsList>
-          <Link href="/">
-            <TabsTrigger value="all">All</TabsTrigger>
-          </Link>
-          <Link href="/?todos=active">
-            <TabsTrigger value="active">Active</TabsTrigger>
-          </Link>
-          <Link href="/?todos=completed">
-            <TabsTrigger value="completed">Completed</TabsTrigger>
-          </Link>
-        </TabsList>
-      </Tabs>
-    </>
+    <Tabs defaultValue="all">
+      <TabsList>
+        <TabsTrigger value="all" asChild>
+          <Link href="/">All</Link>
+        </TabsTrigger>
+        <TabsTrigger value="active" asChild>
+          <Link href="/?todos=active">Active</Link>
+        </TabsTrigger>
+        <TabsTrigger value="completed" asChild>
+          <Link href="/?todos=completed">Completed</Link>
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
   );
 }
 

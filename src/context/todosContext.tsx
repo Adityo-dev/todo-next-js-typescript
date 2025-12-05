@@ -46,7 +46,11 @@ export function TodosProvider({ children }: TodosProviderProps) {
   });
 
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
+    try {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    } catch (err) {
+      console.error("Failed to save todos to localStorage:", err);
+    }
   }, [todos]);
 
   const handleAddTodo = (task: string) => {
