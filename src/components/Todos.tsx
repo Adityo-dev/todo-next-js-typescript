@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useContext } from "react";
 import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
+import { Label } from "@/components/ui/label";
 
 function Todos() {
   const todoCtx = useContext(TodosContext);
@@ -36,28 +37,31 @@ function Todos() {
   }
 
   return (
-    <div className="w-xl flex flex-col gap-6">
+    <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl flex flex-col gap-4">
       {filteredTodos.map((todo) => (
-        <div key={todo?.id} className="flex justify-between items-center gap-4">
-          <div className="flex-1 hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 ">
+        <div
+          key={todo.id}
+          className="flex justify-between items-center gap-3 sm:gap-4"
+        >
+          <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-orange-600 has-[[aria-checked=true]]:bg-orange-50 dark:has-[[aria-checked=true]]:border-orange-500 dark:has-[[aria-checked=true]]:bg-orange-600">
             <Checkbox
-              checked={todo?.completed}
-              onCheckedChange={() => handleToggle(todo?.id)}
+              id={todo.id}
+              checked={todo.completed}
+              onCheckedChange={() => handleToggle(todo.id)}
             />
-
             <p
               className={`text-muted-foreground text-sm ${
-                todo?.completed && "line-through"
+                todo.completed ? "line-through" : ""
               }`}
             >
-              {todo?.task}
+              {todo.task}
             </p>
-          </div>
-          {todo?.completed ? (
-            <Button onClick={() => handleDelete(todo?.id)} variant="ghost">
+          </Label>
+          {todo.completed && (
+            <Button onClick={() => handleDelete(todo.id)} variant="ghost">
               Delete
             </Button>
-          ) : null}
+          )}
         </div>
       ))}
     </div>

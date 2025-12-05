@@ -20,8 +20,8 @@ export default function AddTodo() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex items-center gap-3 w-xl">
+    <form onSubmit={handleSubmit} className="w-full flex justify-center">
+      <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md sm:max-w-lg md:max-w-2xl">
         <Input
           type="text"
           placeholder="Enter Your Task"
@@ -29,9 +29,13 @@ export default function AddTodo() {
           onChange={(e) => setTodoText(e.target.value)}
           className="flex-1"
         />
-
-        <Button type="submit" variant="default" disabled={!todoText.trim()}>
-          Subscribe
+        <Button
+          type="submit"
+          variant="default"
+          disabled={!todoText.trim()}
+          className="w-full sm:w-auto"
+        >
+          Add Task
         </Button>
       </div>
     </form>
